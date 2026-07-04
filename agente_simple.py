@@ -30,8 +30,7 @@ faqs = [
 ]
 
 
-def buscar_faq_universidad(pregunta: str) -> str:
-
+def buscar_faq_universidad(pregunta):
     pregunta = pregunta.lower()
 
     for faq in faqs:

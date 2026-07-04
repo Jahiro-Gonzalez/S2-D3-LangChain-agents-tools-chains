@@ -22,7 +22,7 @@ En `.env` pon tu modelo de Groq y tu API key.
 
 Ejemplo:
 
-```text
+ 
 MODEL_ID=llama-3.1-8b-instant
 GROQ_API_KEY=tu_api_key
 ```
@@ -35,7 +35,7 @@ python agente_simple.py
 
 Preguntas de ejemplo:
 
-```text
+ 
 Como hago mi inscripcion?
 Donde pago la colegiatura?
 No puedo entrar, olvide mi clave

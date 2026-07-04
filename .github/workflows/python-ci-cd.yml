@@ -1,0 +1,106 @@
+name: S3-D5 Python CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint Python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install lint tool
+        run: python -m pip install --upgrade pip ruff
+
+      - name: Run critical lint checks
+        run: ruff check agente_simple.py --select E9,F63,F7,F82
+
+  test:
+    name: Test Python project
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Python script
+        run: python -m compileall agente_simple.py
+
+      - name: Verify requirements file
+        run: python -m pip install --dry-run -r requirements.txt
+
+  build:
+    name: Build artifact
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Package project
+        run: |
+          mkdir -p build
+          zip -r build/s2-d3-python-agent.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x ".venv/*" \
+            -x "__pycache__/*" \
+            -x ".env"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-d3-python-agent
+          path: build/s2-d3-python-agent.zip
+          if-no-files-found: error
+
+  deploy-simulated:
+    name: Deploy simulated
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: simulated-production
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: s2-d3-python-agent
+          path: dist
+
+      - name: Simulate deployment
+        run: |
+          test -f dist/s2-d3-python-agent.zip
+          {
+            echo "## Simulated deployment"
+            echo ""
+            echo "- Artifact: s2-d3-python-agent.zip"
+            echo "- Environment: simulated-production"
+            echo "- Status: deployment simulated successfully"
+          } >> "$GITHUB_STEP_SUMMARY"
