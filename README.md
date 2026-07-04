@@ -25,13 +25,13 @@ Ejemplo:
  
 MODEL_ID=llama-3.1-8b-instant
 GROQ_API_KEY=tu_api_key
-```
+
 
 ## Ejecutar
 
-```bash
+
 python agente_simple.py
-```
+
 
 Preguntas de ejemplo:
 
@@ -40,5 +40,4 @@ Como hago mi inscripcion?
 Donde pago la colegiatura?
 No puedo entrar, olvide mi clave
 Que horario tiene el soporte tecnico?
-```
-
+ejemplo
