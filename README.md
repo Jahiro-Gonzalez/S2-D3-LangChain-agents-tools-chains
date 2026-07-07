@@ -40,4 +40,4 @@ Como hago mi inscripcion?
 Donde pago la colegiatura?
 No puedo entrar, olvide mi clave
 Que horario tiene el soporte tecnico?
-ejemplo
+ejemplo 1
